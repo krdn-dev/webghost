@@ -4,8 +4,6 @@
 
 **Why is this needed:** To make it impossible to distinguish your HTTPS proxy traffic from regular corporate website traffic. WebGhost is suitable for masking proxy servers operating over HTTPS on port 443: NaiveProxy, Hysteria (with HTTP masking), Xray (VLESS+XTLS), Trojan, and others.
 
-![WebGhost Site](https://github.com/krdn-dev/webghost/blob/main/site.PNG)
-
 ## ✨ What WebGhost Does
 
 - **Generates a full-featured website** — blog, "About Us" section, contacts, sitemap, robots.txt, sitemap.xml, and all necessary resources (CSS, JS, images, fonts)
@@ -137,24 +135,21 @@ Yes, a web server is mandatory. WebGhost creates the site and simulates traffic,
 - Root privileges (for writing to `/var/www/html` and `/usr/local/bin`)
 - A working web server answering via HTTPS on your domain (Caddy, Nginx и т.д.)
 
-## 📄 Лицензия
+## 📄 License
 This project is distributed under a proprietary license  [![License](https://img.shields.io/badge/License-Proprietary-red.svg)]()    
 All rights reserved.
 
-Permitted:
-
+Permitted:    
 Free use of the binary for personal and commercial purposes
-
 Copying and redistribution of the binary while retaining authorship
 
-Prohibited:
-
+Prohibited:    
 Modification, decompilation, and reverse engineering
-
 Publishing source code or its derivatives
 
 ## 💰 Support the Project  
-If this script saved you time and you'd like to support its development, you can send a small donation       
+If this script saved you time and you'd like to support its development, you can send a small donation    
+
 [![Bitcoin](https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white)](https://www.blockchain.com/explorer/addresses/btc/bc1p4ttkpfrgzpm7nyymyzdgyd2y6z04s62nxpygk38yylcp3t47m98qwnuhen)
 ```bc1p4ttkpfrgzpm7nyymyzdgyd2y6z04s62nxpygk38yylcp3t47m98qwnuhen```
 
