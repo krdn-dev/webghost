@@ -64,43 +64,43 @@ webghost --domain=example.com install
 | **Update WebGhost to the latest version** | webghost update |
 | **Show all commands and examples** | webghost help или webghost |
 
-## 📲 Примеры использования
+## 📲 Usage Examples
 
-### Полная установка (сайт + автозапуск)
+### Full installation (site + auto-start)
 ```bash
 webghost --domain=example.com install
 ```
 
-### Только создание сайта
+### Generate site only
 ```bash
 webghost --domain=example.com setup-site
 ```
 
-### Запуск имитации
+### Run simulation
 ```bash
 webghost --domain=example.com simulate
 ```
 
-### Запуск имитации с логированием в файл
+### Run simulation with file logging
 ```bash
 webghost --domain=example.com --log=/var/log/webghost.log simulate
 ```
 
-### Взаимная имитация с другим сервером
+### Mutual simulation with another server
 ```bash
 webghost --domain=example.com --remote=other-server.com simulate
 ```
 
-### Взаимная имитация с логированием
+### Mutual simulation with logging
 ```bash
 webghost --domain=example.com --remote=other-server.com --log=/var/log/webghost.log simulate
 ```
 
-### Убедиться, что всё работает
+### Verify everything is working
 ```bash
 cat /var/log/webghost-activity.log
 ```
-В логе вы увидите посещения страниц (HTTP 200), загрузку ресурсов, смену User-Agent и фоновый шум.
+In the log, you will see page visits (HTTP 200), resource loading, User-Agent changes, and background noise.
 
 ## ❓ Часто задаваемые вопросы
 ### Можно ли узнать подробности о сигнатурах, которые WebGhost использует для имитации трафика?
