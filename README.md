@@ -2,7 +2,10 @@
 
 **WebGhost** — это программа (утилита), которая создаёт многостраничный корпоративный сайт и имитирует вокруг него реалистичную посещаемость.
 
-**Зачем это нужно:** чтобы ваш прокси-трафик было невозможно отличить от обычного корпоративного сайта. WebGhost подходит для маскировки любого прокси-сервера: NaiveProxy, Hysteria, Xray и других.
+**Зачем это нужно:** чтобы ваш HTTPS-прокси трафик было невозможно
+отличить от обычного корпоративного сайта. WebGhost подходит для
+маскировки прокси-серверов, работающих через HTTPS на 443 порту:
+NaiveProxy, Hysteria (с HTTP-маскировкой), Xray (VLESS+XTLS), Trojan и других.
 
 ## ✨ Что делает WebGhost
 
@@ -20,7 +23,6 @@ chmod +x /usr/local/bin/webghost
 webghost --domain=example.com install
 ```
 или
-
 ```bash
 wget -O /usr/local/bin/webghost https://github.com/krdn-dev/webghost/releases/latest/download/webghost-linux-amd64 && chmod +x /usr/local/bin/webghost && webghost --domain=example.com install
 ```
@@ -65,12 +67,12 @@ webghost --domain=example.com install
 webghost --domain=example.com setup-site
 ```
 
-### Ручной запуск имитации
+### Запуск имитации
 ```bash
 webghost --domain=example.com simulate
 ```
 
-### С логированием в файл
+### Запуск имитации с логированием в файл
 ```bash
 webghost --domain=example.com --log=/var/log/webghost.log simulate
 ```
@@ -85,11 +87,10 @@ webghost --domain=example.com --remote=other-server.com simulate
 webghost --domain=example.com --remote=other-server.com --log=/var/log/webghost.log simulate
 ```
 
-### Как убедиться, что всё работает
+### Убедиться, что всё работает
 ```bash
 cat /var/log/webghost-activity.log
 ```
-
 В логе вы увидите посещения страниц (HTTP 200), загрузку ресурсов, смену User-Agent и фоновый шум.
 
 ## ❓ Часто задаваемые вопросы
@@ -123,8 +124,8 @@ WebGhost поддерживает два режима работы:
 по соображениям безопасности — они являются частью стратегии обхода DPI.
 
 ### Как убедиться, что WebGhost работает и имитация трафика активна?
-Вся активность записывается в лог /var/log/webghost-activity.log.
-Чтобы просмотреть накопленные записи, выполните команду в терминале: cat /var/log/webghost-activity.log.
+Вся активность записывается в лог `/var/log/webghost-activity.log`.
+Чтобы просмотреть накопленные записи, выполните команду в терминале: `cat /var/log/webghost-activity.log`.
 
 В логе вы увидите: посещения страниц (HTTP 200), запросы к ресурсам (favicon.ico, style.css, картинки), смену User‑Agent и эмуляцию разных браузеров, фоновый шум (редкие запросы к несуществующим страницам) и многое другое.
 
@@ -136,9 +137,10 @@ WebGhost поддерживает два режима работы:
 
 ## 🛠️ Системные требования
 - Linux (amd64 или arm64)
+- Домен, привязанный к серверу (A-запись должна указывать на ваш IP)
 - Доступ к порту 443 (HTTPS)
 - Права root (для записи в /var/www/html и /usr/local/bin)
-- **Работающий веб‑сервер, отвечающий по HTTPS на вашем домене** (Caddy, Nginx и т.д.)
+- Работающий веб‑сервер, отвечающий по HTTPS на вашем домене (Caddy, Nginx и т.д.)
 
 ## 📄 Лицензия
 Проект распространяется под проприетарной лицензией  [![License](https://img.shields.io/badge/License-Proprietary-red.svg)]()    
