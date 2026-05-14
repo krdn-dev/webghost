@@ -140,12 +140,12 @@ This project is distributed under a proprietary license  [![License](https://img
 All rights reserved.
 
 Permitted:    
-Free use of the binary for personal and commercial purposes
-Copying and redistribution of the binary while retaining authorship
+- Free use of the binary for personal and commercial purposes
+- Copying and redistribution of the binary while retaining authorship
 
 Prohibited:    
-Modification, decompilation, and reverse engineering
-Publishing source code or its derivatives
+- Modification, decompilation, and reverse engineering
+- Publishing source code or its derivatives
 
 ## 💰 Support the Project  
 If this script saved you time and you'd like to support its development, you can send a small donation    
