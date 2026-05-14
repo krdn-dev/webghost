@@ -6,7 +6,6 @@
 отличить от обычного корпоративного сайта. WebGhost подходит для
 маскировки прокси-серверов, работающих через HTTPS на 443 порту:
 NaiveProxy, Hysteria (с HTTP-маскировкой), Xray (VLESS+XTLS), Trojan и других.
-![WebGhost Site](https://github.com/krdn-dev/webghost/blob/main/site.PNG)
 
 ## ✨ Что делает WebGhost
 
