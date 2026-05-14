@@ -102,76 +102,62 @@ cat /var/log/webghost-activity.log
 ```
 In the log, you will see page visits (HTTP 200), resource loading, User-Agent changes, and background noise.
 
-## ❓ Часто задаваемые вопросы
-### Можно ли узнать подробности о сигнатурах, которые WebGhost использует для имитации трафика?
-Эта информация намеренно не раскрывается. Чем меньше деталей о внутренних алгоритмах и шаблонах попадает в открытый доступ, тем сложнее разработчикам систем глубокого анализа трафика (DPI) разработать контрмеры. Разработчики на «той стороне» тоже читают документацию, поэтому самые эффективные настройки остаются внутри кода.
+## ❓ Frequently Asked Questions
+### Can I learn more details about the signatures WebGhost uses to imitate traffic?
+This information is intentionally not disclosed. The fewer details about internal algorithms and patterns become publicly available, the harder it is for Deep Packet Inspection (DPI) system developers to devise countermeasures. Developers on "the other side" also read documentation, so the most effective settings remain inside the code.
 
-### А что, DPI не видит, что трафик идёт с локального сервера, а не от реальных посетителей из интернета?
-DPI провайдера видит общий поток данных, проходящий через сервер.
-Он анализирует метаданные (IP, объём, тайминги), но не всегда может
-определить точный источник запроса внутри сети. WebGhost смешивает
-имитированный трафик с реальным, усложняя выделение настоящих
-прокси-соединений на общем фоне. Однако некоторые продвинутые DPI
-могут анализировать задержки или сетевые потоки (NetFlow) и заметить,
-что часть запросов исходит с локального хоста. Именно поэтому мы
-рекомендуем использовать WebGhost в режиме взаимной имитации — когда
-два сервера обмениваются трафиком, создавая двустороннюю картину,
-которую значительно сложнее отличить от реальной.
+### Doesn't the DPI see that traffic originates from the local server rather than real visitors on the internet?
+The ISP's DPI sees the overall data flow passing through the server. It analyzes metadata (IP, volume, timing) but cannot always determine the exact source of requests within the network. WebGhost mixes simulated traffic with real traffic, making it harder to isolate actual proxy connections against the general background. However, some advanced DPI systems can analyze latency or network flows (NetFlow) and notice that some requests originate from localhost. That is why we recommend using WebGhost in mutual simulation mode — where two servers exchange traffic, creating a bidirectional pattern that is significantly harder to distinguish from real traffic.
 
-### Как распределяется имитация трафика в разных режимах?
-WebGhost поддерживает два режима работы:
+### How is traffic simulation distributed in different modes?
+WebGhost supports two modes:
 
-- **Локальный режим** — имитация посетителей только на вашем сервере.
-  Используется по умолчанию, создаёт полноценную картину активного сайта.
+- **Local mode** — simulation of visitors only on your server. Used by default, creates a complete picture of an active site.
 
-- **Режим взаимной имитации** (`--remote`) — оба сервера обмениваются
-  трафиком. Ваш сервер создаёт облегчённую имитацию для себя и полноценную
-  для удалённого. Это делает трафик двусторонним и ещё более естественным
-  для DPI.
+- **Mutual simulation mode** (`--remote`) — both servers exchange traffic. Your server creates a lightweight simulation for itself and a full simulation for the remote server. This makes traffic bidirectional and even more natural for DPI.
 
-Точные параметры (количество сессий, вероятность всплесков) не раскрываются
-по соображениям безопасности — они являются частью стратегии обхода DPI.
+Exact parameters (number of sessions, burst probability) are not disclosed for security reasons — they are part of the DPI evasion strategy.
 
-### Как убедиться, что WebGhost работает и имитация трафика активна?
-Вся активность записывается в лог `/var/log/webghost-activity.log`.
-Чтобы просмотреть накопленные записи, выполните команду в терминале: `cat /var/log/webghost-activity.log`.
+### How can I verify that WebGhost is working and traffic simulation is active?
+All activity is logged to `/var/log/webghost-activity.log`.
+To view the accumulated records, run the command in the terminal: `cat /var/log/webghost-activity.log`.
 
-В логе вы увидите: посещения страниц (HTTP 200), запросы к ресурсам (favicon.ico, style.css, картинки), смену User‑Agent и эмуляцию разных браузеров, фоновый шум (редкие запросы к несуществующим страницам) и многое другое.
+In the log, you will see: page visits (HTTP 200), resource requests (favicon.ico, style.css, images), User‑Agent changes and emulation of different browsers, background noise (rare requests to non-existent pages), and more.
 
-### Обязательно ли на удалённом сервере должен стоять WebGhost?
-Для максимальной реалистичности — да. WebGhost при взаимной имитации
-запрашивает те же страницы, которые генерирует при setup-site. Если
-на удалённом сервере нет такого сайта, он будет отвечать ошибками 404,
-что неестественно для корпоративного портала и может привлечь внимание DPI.
+### Does the remote server need to have WebGhost installed?
+For maximum realism — yes. In mutual simulation mode, WebGhost requests the same pages that are generated by `setup-site`. If the remote server does not have such a site, it will respond with 404 errors, which is unnatural for a corporate portal and may attract DPI attention.
 
-### Нужен ли веб‑сервер для работы WebGhost?
-Да, веб‑сервер обязателен. WebGhost создаёт сайт и имитирует трафик, но сам не обрабатывает входящие HTTPS‑запросы. Веб‑сервер (Caddy, Nginx и т.д.) должен быть установлен и настроен отдельно, чтобы сайт был доступен из интернета. Если вы используете [NaiveProxy Manager](https://github.com/krdn-dev/naiveproxy-manager), веб‑сервер устанавливается автоматически.
+### Is a web server required for WebGhost to work?
+Yes, a web server is mandatory. WebGhost creates the site and simulates traffic, but it does not handle incoming HTTPS requests by itself. A web server (Caddy, Nginx, etc.) must be installed and configured separately so that the site is accessible from the internet. If you are using [NaiveProxy Manager](https://github.com/krdn-dev/naiveproxy-manager), the web server is installed automatically.
 
-## 🛠️ Системные требования
+## 🛠️ System Requirements
 - Linux (amd64 или arm64)
-- Домен, привязанный к серверу (A-запись должна указывать на ваш IP)
-- Доступ к порту 443 (HTTPS)
-- Права root (для записи в /var/www/html и /usr/local/bin)
-- Работающий веб‑сервер, отвечающий по HTTPS на вашем домене (Caddy, Nginx и т.д.)
+- A domain pointed to the server (A record must resolve to your IP)
+- Access to port 443 (HTTPS)
+- Root privileges (for writing to `/var/www/html` and `/usr/local/bin`)
+- A working web server answering via HTTPS on your domain (Caddy, Nginx и т.д.)
 
 ## 📄 Лицензия
-Проект распространяется под проприетарной лицензией  [![License](https://img.shields.io/badge/License-Proprietary-red.svg)]()    
-Все права защищены.
+This project is distributed under a proprietary license  [![License](https://img.shields.io/badge/License-Proprietary-red.svg)]()    
+All rights reserved.
 
-Разрешено:
-- Свободное использование бинарника в личных и коммерческих целях
-- Копирование и распространение бинарника с сохранением авторства
+Permitted:
 
-Запрещено:
-- Модификация, декомпиляция и reverse engineering
-- Публикация исходного кода или его производных
+Free use of the binary for personal and commercial purposes
 
-## 💰 Поддержать проект  
-Если хотите поддержать развитие проекта, можете отправить небольшое пожертвование   
+Copying and redistribution of the binary while retaining authorship
 
+Prohibited:
+
+Modification, decompilation, and reverse engineering
+
+Publishing source code or its derivatives
+
+## 💰 Support the Project  
+If this script saved you time and you'd like to support its development, you can send a small donation       
 [![Bitcoin](https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white)](https://www.blockchain.com/explorer/addresses/btc/bc1p4ttkpfrgzpm7nyymyzdgyd2y6z04s62nxpygk38yylcp3t47m98qwnuhen)
 ```bc1p4ttkpfrgzpm7nyymyzdgyd2y6z04s62nxpygk38yylcp3t47m98qwnuhen```
 
-❤️ Спасибо за поддержку!    
-⭐ Поставьте звезду репозиторию, если скрипт вам помог!
+❤️ Thank you for your support!     
+⭐ Star this repository if the script helped you!
 
