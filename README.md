@@ -1,4 +1,4 @@
-# WebGhost
+# WebGhost-Traffic Imitator
 
 **Realistic corporate website generator & traffic camouflage for privacy obfuscation.**
 
