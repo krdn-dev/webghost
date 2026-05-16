@@ -57,6 +57,7 @@ webghost --domain=example.com install
 | Description | Command |
 |-----------|----------------------|
 | **Install website and configure systemd timer** | webghost --domain=example.com install |
+| **Install with contact form** | webghost --domain=example.com --post install |
 | **Generate site structure only** | webghost --domain=example.com setup-site |
 | **Manually run traffic simulation** | webghost --domain=example.com simulate |
 | **Update WebGhost to the latest version** | webghost update |
