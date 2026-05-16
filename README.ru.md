@@ -64,6 +64,7 @@ webghost --domain=example.com install
 | Описание | Команда |
 |-----------|----------------------|
 | **Установка сайта и настройка systemd-таймера** | webghost --domain=example.com install |
+| **Установка с контактной формой** | webghost --domain=example.com --post install |
 | **Только создание структуры сайта** | webghost --domain=example.com setup-site |
 | **Запуск имитации трафика вручную** | webghost --domain=example.com simulate |
 | **Обновить WebGhost до последней версии** | webghost update |
@@ -106,6 +107,46 @@ webghost --domain=example.com --remote=other-server.com --log=/var/log/webghost.
 cat /var/log/webghost-activity.log
 ```
 В логе вы увидите посещения страниц (HTTP 200), загрузку ресурсов, смену User-Agent и фоновый шум.
+
+## 📬 Контактная форма (опционально)
+
+По умолчанию, без флага `--post`, WebGhost **не добавляет** форму обратной связи на главную страницу.
+
+**Почему:** POST-запросы обрабатывает не WebGhost, а веб-сервер (Caddy, Nginx, Apache). WebGhost генерирует статические HTML-страницы, но не может управлять тем, как веб-сервер отвечает на POST-запросы. Если форма есть, а веб-сервер не настроен на приём POST, он вернёт ошибку `405 Method Not Allowed`. Любые ошибки в логах привлекают внимание DPI и могут демаскировать прокси-трафик. Поэтому по умолчанию форма отключена — WebGhost не должен ничего создавать, что могло бы сгенерировать подозрительный ответ сервера.
+
+Если вы хотите добавить работающую форму, используйте флаг `--post` 
+```bash
+webghost --domain=example.com --post install
+```
+и **дополнительно настройте веб-сервер** (примеры настройки приведены ниже).
+
+### Что произойдёт:    
+На главной странице появится форма с полями: имя, email, сообщение    
+Будет создана страница благодарности /contact/thank-you.html    
+POST-запросы к /contact будут возвращать 302 с редиректом на страницу благодарности    
+
+### Требования к веб-серверу:    
+Для корректной работы формы необходимо настроить ваш веб-сервер (Caddy, Nginx) на обработку POST-запросов к /contact с редиректом на /contact/thank-you.html.
+
+### Пример настройки для Caddy:
+```bash
+@post method POST
+handle @post {
+    handle /contact* {
+        header Location "/contact/thank-you.html"
+        respond "" 302
+    }
+}
+```   
+### Пример настройки для Nginx:
+```bash
+location /contact {
+    if ($request_method = POST) {
+        return 302 /contact/thank-you.html;
+    }
+    try_files $uri $uri/ =404;
+}
+```
 
 ## ❓ Часто задаваемые вопросы
 ### Можно ли узнать подробности о сигнатурах, которые WebGhost использует для имитации трафика?
