@@ -100,6 +100,46 @@ cat /var/log/webghost-activity.log
 ```
 In the log, you will see page visits (HTTP 200), resource loading, User-Agent changes, and background noise.
 
+## 📬 Contact form (optional)
+
+By default, without the `--post` flag, WebGhost **does not add** a contact form to the main page.
+
+**Why:** POST requests are handled not by WebGhost, but by your web server (Caddy, Nginx, Apache). WebGhost generates static HTML pages but cannot control how your web server responds to POST requests. If the form exists and the web server is not configured to accept POST requests, it will return a `405 Method Not Allowed` error. Any errors in logs attract DPI attention and can unmask proxy traffic. That's why the form is disabled by default — WebGhost should not create anything that could generate suspicious server responses.
+
+If you want to add a working form, use the `--post` flag: 
+```bash
+webghost --domain=example.com --post install
+```
+and **additionally configure your web server** (examples below).
+
+### What will happen:    
+- A contact form will appear on the main page with fields: name, email, message  
+- A thank-you page will be created at `/contact/thank-you.html`   
+- POST requests to `/contact` will return 302 with a redirect to the thank-you page  
+
+### Web server requirements:   
+To make the form work, you need to configure your web server (Caddy, Nginx) to handle POST requests to `/contact` with a redirect to `/contact/thank-you.html`.
+
+### Example configuration for Caddy:
+```bash
+@post method POST
+handle @post {
+    handle /contact* {
+        header Location "/contact/thank-you.html"
+        respond "" 302
+    }
+}
+```   
+### Example configuration for Nginx:
+```bash
+location /contact {
+    if ($request_method = POST) {
+        return 302 /contact/thank-you.html;
+    }
+    try_files $uri $uri/ =404;
+}
+```
+
 ## ❓ Frequently Asked Questions
 ### Can I learn more details about the signatures WebGhost uses to imitate traffic?
 This information is intentionally not disclosed. The fewer details about internal algorithms and patterns become publicly available, the harder it is for Deep Packet Inspection (DPI) system developers to devise countermeasures. Developers on "the other side" also read documentation, so the most effective settings remain inside the code.
