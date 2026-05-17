@@ -9,6 +9,8 @@
 
 ## 🚀 Quick Installation
 
+> ⚠️ Replace `example.com` with your own domain.
+
 ```bash
 wget https://github.com/krdn-dev/webghost/releases/latest/download/webghost-linux-amd64 -O /usr/local/bin/webghost
 chmod +x /usr/local/bin/webghost
