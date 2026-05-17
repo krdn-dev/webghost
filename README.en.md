@@ -6,7 +6,7 @@
 
 ## ✨ What WebGhost Does
 
-- **Generates a full-featured website** — blog, "About Us" section, contacts, sitemap, robots.txt, sitemap.xml, and all necessary resources (CSS, JS, images, fonts)
+- **Generates a full-featured website** — blog, "About Us" section, contacts, robots.txt, sitemap.xml, and all necessary resources (CSS, JS, images, fonts)
 - **Simulates real visitors** — different browsers (Chrome, Firefox, Safari, Edge), reading pauses, link clicks, form submissions, UTM parameters
 - **Adds background noise** — requests from search engine bots, security scanners, attempts to access non-existent pages
 - **Supports mutual simulation** — two servers can generate traffic for each other
