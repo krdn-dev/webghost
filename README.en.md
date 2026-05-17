@@ -27,11 +27,11 @@ Visually, all sites look consistent with a corporate style, but re-installing on
 ```bash
 wget https://github.com/krdn-dev/webghost/releases/latest/download/webghost-linux-amd64 -O /usr/local/bin/webghost
 chmod +x /usr/local/bin/webghost
-webghost --domain=example.com install
+webghost example.com install
 ```
 or
 ```bash
-wget -O /usr/local/bin/webghost https://github.com/krdn-dev/webghost/releases/latest/download/webghost-linux-amd64 && chmod +x /usr/local/bin/webghost && webghost --domain=example.com install
+wget -O /usr/local/bin/webghost https://github.com/krdn-dev/webghost/releases/latest/download/webghost-linux-amd64 && chmod +x /usr/local/bin/webghost && webghost example.com install
 ```
 
 ## Step-by-Step Installation
@@ -49,57 +49,53 @@ sudo chmod +x /usr/local/bin/webghost
 
 ### 3. Create the website and set up auto-start
 ```bash
-webghost --domain=example.com install
+webghost example.com install
 ```
-
-## 📲 Main Commands
-
-| Description | Command |
-|-----------|----------------------|
-| **Install website and configure systemd timer** | webghost --domain=example.com install |
-| **Install with contact form** | webghost --domain=example.com --post install |
-| **Generate site structure only** | webghost --domain=example.com setup-site |
-| **Manually run traffic simulation** | webghost --domain=example.com simulate |
-| **Update WebGhost to the latest version** | webghost update |
-| **Show all commands and examples** | webghost help или webghost |
 
 ## 📲 Usage Examples
 
-### Full installation (site + auto-start)
+### Basic Installation
 ```bash
-webghost --domain=example.com install
+webghost example.com install
+```
+**After execution:**
+- A full corporate website is generated in /var/www/html.
+- A systemd timer is configured to run traffic simulation automatically.
+- An initial simulation run starts immediately so logs begin populating.
+
+### Installation with a Contact Form
+```bash
+webghost example.com install --post
 ```
 
-### Generate site only
+### Mutual Imitation with Another Server
 ```bash
-webghost --domain=example.com setup-site
+webghost my-site.com partner-site.com install
 ```
+WebGhost will send requests to both `my-site.com` and `partner-site.com`, simulating mutual visits.
 
-### Run simulation
-```bash
-webghost --domain=example.com simulate
-```
-
-### Run simulation with file logging
-```bash
-webghost --domain=example.com --log=/var/log/webghost.log simulate
-```
-
-### Mutual simulation with another server
-```bash
-webghost --domain=example.com --remote=other-server.com simulate
-```
-
-### Mutual simulation with logging
-```bash
-webghost --domain=example.com --remote=other-server.com --log=/var/log/webghost.log simulate
-```
-
-### Verify everything is working
+### Viewing Logs
 ```bash
 cat /var/log/webghost-activity.log
 ```
-In the log, you will see page visits (HTTP 200), resource loading, User-Agent changes, and background noise.
+The log contains page visits (HTTP 200, 304, 404), resource loading, User-Agent switching, background noise, distractions, Google Analytics hits, etc.
+
+### Removing Only the Timer
+```bash
+webghost uninstall
+```
+The timer and the automation script are removed. The website files remain intact.
+
+### Full Uninstall
+```bash
+webghost uninstall-all
+```
+Removes the systemd timer, the generated website `/var/www/html`, the binary `/usr/local/bin/webghost`, and the log file `/var/log/webghost-activity.log`.
+
+### Updating to the Latest Version
+```bash
+webghost update
+```
 
 ## 📬 Contact form (optional)
 
@@ -109,7 +105,7 @@ By default, without the `--post` flag, WebGhost **does not add** a contact form 
 
 If you want to add a working form, use the `--post` flag: 
 ```bash
-webghost --domain=example.com --post install
+webghost example.com install --post
 ```
 and **additionally configure your web server** (examples below).
 
@@ -153,7 +149,7 @@ WebGhost supports two modes:
 
 - **Local mode** — simulation of visitors only on your server. Used by default, creates a complete picture of an active site.
 
-- **Mutual simulation mode** (`--remote`) — both servers exchange traffic. Your server creates a lightweight simulation for itself and a full simulation for the remote server. This makes traffic bidirectional and even more natural for DPI.
+- **Mutual simulation mode** — both servers exchange traffic. Your server creates a lightweight simulation for itself and a full simulation for the remote server. This makes traffic bidirectional and even more natural for DPI.
 
 Exact parameters (number of sessions, burst probability) are not disclosed for security reasons — they are part of the DPI evasion strategy.
 
