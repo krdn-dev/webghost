@@ -69,6 +69,14 @@ webghost example.com install
 ```bash
 webghost example.com install --post
 ```
+### Silent Mode
+```bash
+webghost example.com install --quiet
+webghost example.com install --post --quiet
+```
+The `--quiet` flag suppresses all console output during simulation.  
+Logs are still written to `/var/log/webghost-activity.log` in full.
+
 
 ### Mutual Imitation with Another Server
 ```bash
