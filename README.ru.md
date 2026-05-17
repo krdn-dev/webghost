@@ -60,6 +60,14 @@ webghost example.com install
 webghost example.com install --post
 ```
 
+### Тихий режим
+```bash
+webghost example.com install --quiet
+webghost example.com install --post --quiet
+```
+Этот режим полезен при автоматической установке через скрипты –
+консоль остаётся чистой, а WebGhost продолжает работать в фоне.
+
 ### Взаимная имитация с другим сервером
 ```bash
 webghost my-site.com partner-site.com install
